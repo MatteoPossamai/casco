@@ -1,0 +1,16 @@
+.vscode/
+build/
+experiments/
+
+# Ignore all the Latex compiled files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.pdf
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.thm
