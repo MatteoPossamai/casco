@@ -12,7 +12,7 @@
 # Exorcising Spectre with Secure Speculation
 
 
-# Avoiding Instruction-Centric Microarchitectural...
+# Avoiding Instruction-Centric Micro-architectural...
 Mitigate "automatically" future threads with a framework that used the description and the countermeasures that are developed by researchers. 
 
 ## Background
@@ -20,8 +20,8 @@ Mitigate "automatically" future threads with a framework that used the descripti
 - Some optimizations can be done at the OS level with bits, and they are not always easy to apply depending on the platform. Sometime is better to set these bits instead of transforming the code, and `cio` can do this. 
 - HW for constant time instruction is unreliable
 
-## Theat model
-- The vulenrability is novel, we have no strict semantic to define it
+## Threat model
+- The vulnerability is novel, we have no strict semantic to define it
 - Assume that source code is CT in CPU with no given improvement
 - The attacker can observe each time the optimization is used, to make the strongest attacker possible and make the framework more robust
 

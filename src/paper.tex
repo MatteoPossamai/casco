@@ -1,0 +1,92 @@
+% \newif\ifComment\Commentfalse
+\documentclass[conference]{IEEEtran}
+\usepackage{microtype}
+\usepackage[switch]{lineno}
+\usepackage{stmaryrd}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumerate}
+\usepackage[square,comma,numbers,sort&compress]{natbib}
+
+\usepackage{tikz}
+\usetikzlibrary{external}
+\usepackage{letltxmacro}
+\setlength{\marginparwidth}{1.5cm}
+\reversemarginpar
+\usepackage{todonotes}
+\usepackage{marginnote}
+\usepackage{tikz}
+\let\marginpar\marginnote
+
+% always load hyperref last
+\usepackage[colorlinks=true,linkcolor=Green,citecolor=NavyBlue,pagebackref]{hyperref} % Hyperlinks
+\usepackage[hyphenbreaks]{breakurl}  % https://tex.stackexchange.com/a/559001
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}            % \cref for automatically using the right word for refs
+
+\renewcommand\thelinenumber{\color{pink}\arabic{linenumber}}
+\newcommand\llabel[1]{\hypertarget{#1}{\linelabel{#1}}}
+\renewcommand\llabel[1]{}
+
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\etal}{et al.\xspace}
+\newcommand{\contract}[2]{\ensuremath{\llbracket \,\cdot\, \rrbracket^{\text{#1}}_{\text{#2}}}}
+\newcommand{\p}{p\xspace}
+\newcommand{\contractP}[2]{\ensuremath{\llbracket \p \rrbracket^{\text{#1}}_{\text{#2}}}}
+\renewcommand{\ni}[1]{\ensuremath{\mathit{NI}({#1})}}
+\newcommand{\nipi}[2]{\ensuremath{\mathit{NI}({#1}, {#2})}}
+
+\renewcommand{\iff}{\Leftrightarrow}
+\newcommand{\satisfies}{\vdash}
+
+\newcommand{\fetch}{{\color{ForestGreen}fetch\xspace}}
+\newcommand{\execute}[1]{{\color{ForestGreen}execute $#1$\xspace}}
+\newcommand{\retire}{{\color{ForestGreen}retire\xspace}}
+
+% bold subsection headings
+%\let\oldsubsection\subsection
+%\renewcommand{\subsection}[1]{\oldsubsection{\bfseries #1}}
+
+\heavyrulewidth=.12em % default in booktabs is .08em
+\lightrulewidth=.09em % default in booktabs is .05em
+\cmidrulewidth=.03em % default in booktabs is .03em
+
+\newcommand{\gb}[1]{\textcolor{blue}{GB: #1}}
+\newcommand{\sj}[1]{\textcolor{orange}{SC: #1}}
+\newcommand{\cd}[1]{\textcolor{magenta}{CD: #1}}
+\newcommand{\dm}[1]{\textcolor{violet}{DM: #1}}
+
+\newcommand{\NEW}[1]{{#1}}
+
+
+\begin{document}
+% \linenumbers
+
+\title{\huge{CASCO: Contract Aware Secure COmpilation ???}}
+
+\newcommand{\firstauthormark}{$^*$}
+
+\author{
+\IEEEauthorblockN{Marco Guarnieri}
+\IEEEauthorblockA{\textit{IMDEA Software Institute}}
+\and
+\IEEEauthorblockN{Marco Patrignani}
+\IEEEauthorblockA{\textit{University of Trento}}
+\and
+\IEEEauthorblockN{Matteo Possamai}
+\IEEEauthorblockA{\textit{Unknown...}}
+}
+
+\maketitle
+
+
+% \input{abstract}
+% \input{TODO}
+
+% \bibliographystyle{IEEEtranS}
+\bibliographystyle{abbrv}
+{\small
+\bibliography{bib}
+}
+
+\end{document}
+
