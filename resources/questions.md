@@ -34,4 +34,12 @@ Should we care about non terminating programs or programs that fail?
 
 ## Question 5
 
+Do we need a DSL for Contracts? What does it mean? Is not enough to use the ones that are described into [Hardware Software Paper](./other_papers.md#hardware-software-contracts-for-secure-speculation)? So once we have `CT-AM` and `ARCH-AM` should be it?
+
+## Answer 5
+
+TODO
+
+## Question 6
+
 ...

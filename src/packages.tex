@@ -1,0 +1,69 @@
+\usepackage{stmaryrd}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\let\ORIGINALincludegraphics\includegraphics
+\usepackage{cite}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathpartir}
+\usepackage{verbatim}
+\usepackage[hyphens]{url}
+\usepackage{paralist}
+\usepackage{xcolor}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\declaretheorem[name=Theorem]{thm}
+\declaretheorem[name=Proposition]{prop}
+\declaretheorem[name=Lemma]{lem}
+\usepackage{listings}
+\usepackage{paralist}
+\usepackage{subfigure}
+\usepackage{xifthen}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{tikz-cd}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{xspace}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{shapes,fit,arrows.meta}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols}
+\tikzset{negated/.style={
+        decoration={markings,
+            mark= at position 0.5 with {
+                \node[transform shape] (tempnode) {$\backslash$};
+            }
+        },
+        postaction={decorate}
+    }
+}
+
+
+\usepackage{extarrows}
+\usepackage{mathtools}
+\usepackage{subfigure}
+\usepackage[Export]{adjustbox}[2018/04/08]
+\usepackage{pdfpages}
+
+\makeatletter
+\newcommand{\xMapsto}[2][]{\ext@arrow 0599{\Mapstofill@}{#1}{#2}}
+\def\Mapstofill@{\arrowfill@{\Mapstochar\Relbar}\Relbar\Rightarrow}
+\providecommand*{\twoheadrightarrowfill@}{%
+  \arrowfill@\relbar\relbar\twoheadrightarrow
+}
+\providecommand*{\xtwoheadrightarrow}[2][]{%
+  \ext@arrow 0579\twoheadrightarrowfill@{#1}{#2}%
+}
+\makeatother
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering}m{#1}}
+\usepackage{bm}
+\usepackage{numprint}
+\npthousandsep{\,}
+
+\usepackage{xstring}

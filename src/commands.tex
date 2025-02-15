@@ -1,0 +1,409 @@
+								 
+\newcommand{\hide}[1]{%
+    \IfEqCase{\hideComments}{%
+        {false}{#1}%
+        {true}{}%
+        % you can add more cases here as desired
+    }
+}
+
+\newcommand{\techReportAppendix}[1]{%
+    \IfEqCase{\shortVersion}{%
+        {false}{Appendix \ref{#1}}%
+        {true}{\cite{techReport}}%
+        % you can add more cases here as desired
+    }
+}%
+
+\newcommand{\techReportAppendices}[2]{%
+    \IfEqCase{\shortVersion}{%
+        {false}{Appendices \ref{#1}--\ref{#2}}%
+        {true}{\cite{techReport}}%
+        % you can add more cases here as desired
+    }
+}%
+
+
+\newcommand{\onlyTechReport}[1]{%
+    \IfEqCase{\shortVersion}{%
+        {false}{#1}%
+        % you can add more cases here as desired
+    }
+}%
+
+
+\newcommand{\onlyShortVersion}[1]{%
+    \IfEqCase{\shortVersion}{%
+        {true}{#1}%
+        % you can add more cases here as desired
+    }
+}%
+
+
+% NAMES
+\newcommand{\lang}{$\mu$\textsc{Asm}}
+\newcommand{\tightpar}[1]{{\smallskip \noindent\bf #1}}
+\newcommand{\para}[1]{\subsubsection*{#1}}
+\newcommand{\spectre}{\textsc{Spectre}}
+\newcommand{\tool}{\textsc{Spectector}\xspace}
+% SYSTEMS
+\newcommand{\clang}{\textsc{Clang}}
+\newcommand{\icc}{\textsc{Icc}}
+\newcommand{\vcc}{\textsc{Visual C++}}
+\newcommand{\gcc}{\textsc{Gcc}}
+\newcommand{\ciao}{\textsc{Ciao}}
+
+%%%%% automatically break the line at commas in math mode
+\AtBeginDocument{%
+  \mathchardef\mathcomma\mathcode`\,
+  \mathcode`\,="8000 
+}
+{\catcode`,=\active
+  \gdef,{\mathcomma\discretionary{}{}{}}
+}
+
+\newcommand\fcirc{{\color{black}\bullet}\mathllap{\circ}}
+
+%%%%%%%% ENVIRONMENTS
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{exampleInt}{Example}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newenvironment{example}
+ {\begin{exampleInt} } 
+ { $\hfill \blacksquare$\end{exampleInt} }
+\newenvironment{proofsketch}{\paragraph*{Proof sketch}}{\\}
+
+
+%%%%%%%% LANGUAGES
+
+% Jose: Fix for \lstinline + ttfamily + math mode
+% https://tex.stackexchange.com/questions/127010/how-can-i-make-lstinline-function-normally-inside-math-mode
+\usepackage{letltxmacro}
+\newcommand*{\SavedLstInline}{}
+\LetLtxMacro\SavedLstInline\lstinline
+\DeclareRobustCommand*{\lstinline}{%
+  \ifmmode
+    \let\SavedBGroup\bgroup
+    \def\bgroup{%
+      \let\bgroup\SavedBGroup
+      \hbox\bgroup
+    }%
+  \fi
+  \SavedLstInline
+}
+
+\lstset{numbers=left,xleftmargin=2em,frame=single,framexleftmargin=1.5em,basicstyle=\ttfamily}
+
+\lstdefinestyle{Cstyle}
+{
+	%% FORMATTING
+	frame = tb,
+  belowskip=.4\baselineskip,
+  aboveskip=.4\baselineskip,
+  	showstringspaces = false,
+  	breaklines = true,
+  	breakatwhitespace = true,
+  	tabsize = 3,
+  	numbers = left,
+    stepnumber = 1,
+    numberstyle = \tiny\color{gray},
+  	%%% LANGUAGE
+    language = {[ANSI]C},
+    alsoletter={.\$},
+    basicstyle={\ttfamily\color{black}},
+    stringstyle={\ttfamily\color{string-color}},
+    keywordstyle={\ttfamily\color{Blue3}},
+    keywordstyle=[2]{\ttfamily\color{Green4}},
+    keywordstyle=[3]{\ttfamily\color{orange}},
+    keywordstyle=[4]{\ttfamily\color{violet}},
+    otherkeywords = {temp,y,A,B,k,size},
+    morekeywords = [2]{A,B},
+    morekeywords = [3]{},
+    morekeywords = [4]{y,size,k,temp},
+}
+
+\lstdefinestyle{ASMstyle}
+{
+	%% FORMATTING
+	frame = tb,
+  belowskip=.4\baselineskip,
+  aboveskip=.4\baselineskip,
+  	showstringspaces = false,
+              	breaklines = true,
+  	breakatwhitespace = true,
+  	tabsize = 3,
+  	numbers = left,
+    stepnumber = 1,
+    numberstyle = \tiny\color{gray},
+  	%%% LANGUAGE
+    alsoletter={.\$\%},
+    basicstyle={\ttfamily\color{black}},
+    stringstyle={\ttfamily\color{string-color}},
+    keywordstyle={\ttfamily\color{Blue3}},
+    keywordstyle=[2]{\ttfamily\color{Green4}},
+    keywordstyle=[3]{\ttfamily\color{orange}},
+    keywordstyle=[4]{\ttfamily\color{violet}},
+    keywordstyle=[5]{\ttfamily\color{red}}, 
+    keywords = {cmova, cmovae, cmovb, cmove, cmovne, cmovbe, mov, xor, or,  jbe, jne, add, jmp,  cmp, shl, and, sar, lfence, jae, clt,  and, lea},
+    morekeywords = {},
+    morekeywords = [2]{A, B},
+    morekeywords = [3]{\%rax, \%rbx, \%rcx, \%eax, \%ecx, \%rbp, \%cl, \%rdi, \%edx, \%esi, \%rsi, \%rdx, \%rsp, \%al, \%rip, \%ax, \%bx, \%cx,  \%bp,  \%di, \%dx, \%si, \%sp, \%ip, \%r8b},
+    morekeywords = [4]{k, y, size, temp},
+    morekeywords = [5]{END, .L1, .L2}
+}
+
+\newcommand{\inlineCcode}[1]{\lstinline[style=Cstyle]|#1|}
+\newcommand{\inlineASMcode}[1]{\lstinline[style=ASMstyle]|#1|}
+
+%%%%%%%% NOTES
+\definecolor{Blue3}{HTML}{0000CD}
+\definecolor{Green4}{HTML}{008B00}
+\definecolor{Red3}{HTML}{CD0000}
+\definecolor{orange}{rgb}{0.8, 0.47, 0.196}
+
+
+
+\newcommand\boris[1]{\textcolor{Blue3}{Boris: #1}}
+\newcommand\marco[1]{\textcolor{Red3}{Marco: #1}}
+\newcommand\jan[1]{\textcolor{Green4}{Jan: #1}}
+\newcommand\jose[1]{\textcolor{brown}{Jos{\'e}: #1}}
+\newcommand\andres[1]{\textcolor{violet}{Andr{\'e}s: #1}}
+
+
+\newcommand\remove[1]{}
+
+%%%%%%%% NEW SYMBOLS
+\newcommand{\cL}{{\cal L}}
+\renewcommand{\leadsto}{\rightsquigarrow}
+ \newcommand\xleadsto[1]{%
+   \if\relax\detokenize{#1}\relax
+   \rightsquigarrow
+   \else
+   \mathrel{%
+     \begin{tikzpicture}[%
+       baseline={(current bounding box.south)}
+       ]
+       \node[%
+       ,inner sep=.44ex
+       ,align=center
+       ] (tmp) {$\scriptstyle #1$};
+       \path[%
+       ,draw,<-
+       ,decorate,decoration={%
+         ,zigzag
+         ,amplitude=0.7pt
+         ,segment length=1.2mm,pre length=3.5pt
+       }
+       ] 
+       (tmp.south east) -- (tmp.south west);
+     \end{tikzpicture}
+   }
+   \fi
+ }
+
+
+\newcommand{\todo}[1]{{\color{red}[Todo: #1]}}
+\newcommand{\comments}[1]{{\color{blue}[Comment: #1]}}
+
+
+%%%%% LANGUAGE
+
+\newcommand{\histories}{\mathcal{H}}
+\newcommand{\tup}[1]{\langle #1 \rangle}
+\newcommand{\Var}{\mathit{Regs}}
+\newcommand{\Val}{\mathit{Vals}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Lbl}{\mathit{Labels}}
+\newcommand{\Mem}{\mathit{Mem}}
+\newcommand{\Assgn}{\mathit{Assgn}}
+\newcommand{\Addr}{\mathit{Addrs}}
+\newcommand{\Conf}{\mathit{Conf}}
+\newcommand{\Init}{\mathit{InitConf}}
+\newcommand{\Final}{\mathit{FinalConf}}
+\newcommand{\InitAssgn}{\mathit{InitAssgn}}
+\newcommand{\FinalAssgn}{\mathit{FinalAssgn}}
+\newcommand{\Obs}{\mathit{Obs}}
+\newcommand{\ExtObs}{\mathit{ExtObs}}
+\newcommand{\Prg}{\mathit{Prg}}
+\newcommand{\bp}{{\mathcal{O}}}
+\newcommand{\lbl}{\ell}
+\newcommand{\kywd}[1]{\mathbf{#1}}
+\newcommand{\skipKywd}{\kywd{skip}}
+\newcommand{\storeKywd}{\kywd{store}}
+\newcommand{\loadKywd}{\kywd{load}}
+\newcommand{\jmpKywd}{\kywd{jmp}}
+\newcommand{\jzKywd}{\kywd{beqz}}
+\newcommand{\pcKywd}{\kywd{pc}}
+\newcommand{\barrierKywd}{\kywd{spbarr}}
+\newcommand{\pc}{\pcKywd}
+\newcommand{\obsKywd}[1]{\textcolor{Blue3}{\mathtt{#1}}}
+\newcommand{\loadObsKywd}{\obsKywd{load}}
+\newcommand{\storeObsKywd}{\obsKywd{store}}
+\newcommand{\pcObsKywd}{\obsKywd{pc}}
+\newcommand{\loadObs}[1]{\loadObsKywd\ #1}
+\newcommand{\storeObs}[1]{\storeObsKywd\ #1}
+\newcommand{\pcObs}[1]{\pcObsKywd\ #1}
+\newcommand{\startObsKywd}[1]{\obsKywd{start}}
+\newcommand{\commitObsKywd}[1]{\obsKywd{commit}} 
+\newcommand{\rollbackObsKywd}[1]{\obsKywd{rollback}}
+\newcommand{\startObs}[1]{\startObsKywd{}\ #1}
+\newcommand{\finishObs}{\kywd{end}}
+\newcommand{\commitObs}[1]{\commitObsKywd{}\ #1}
+\newcommand{\rollbackObs}[1]{\rollbackObsKywd{}\ #1}
+\newcommand{\unaryOp}[1]{\ominus #1}
+\newcommand{\binaryOp}[2]{#1 \otimes #2}
+\newcommand{\cmd}[2]{ #1 : #2 }
+\newcommand{\pseq}[2]{#1 ; #2}
+\newcommand{\pskip}{\skipKywd{}}
+\newcommand{\passign}[2]{#1 \leftarrow #2}
+\newcommand{\pload}[2]{\loadKywd\ #1, #2}
+\newcommand{\pstore}[2]{\storeKywd\ #1, #2}
+\newcommand{\pcondassign}[3]{#1 \xleftarrow{#3?} #2}
+\newcommand{\pjmp}[1]{\jmpKywd\ #1}
+\newcommand{\pjz}[2]{\jzKywd\ #1, #2}
+\newcommand{\pbarrier}{\barrierKywd}
+\newcommand{\select}[2]{#1(#2)}
+\newcommand{\eval}[2]{\xrightarrow{#2}}
+\newcommand{\speval}[3]{\xleadsto{#3}}
+\newcommand{\exprEval}[2]{\llbracket #1 \rrbracket(#2)}
+\newcommand{\isJump}[2]{\mathit{isJmp}(#1,#2)}
+\newcommand{\traces}[2]{\llparenthesis #1 \rrparenthesis_{#2}}
+\newcommand{\project}[1]{#1\mathord{\upharpoonright}}
+\newcommand{\specProject}[1]{#1\mathord{\upharpoonright_{se}}}
+\newcommand{\nspecProject}[1]{#1\mathord{\upharpoonright_{nse}}}
+\newcommand{\filter}[2]{\mathit{filter}(#1,#2)}
+\newcommand{\access}[1]{\mathit{acc}(#1)}
+\newcommand{\specStates}{\mathit{SpecS}}
+\newcommand{\ExtConf}{\mathit{ExtConf}}
+\newcommand{\exhausted}[1]{\mathit{enabled}(#1)}
+\newcommand{\epochEnd}[2]{\mathit{next}(#1,#2)}
+\newcommand{\sw}{\mathit{sw}}
+\newcommand{\deriveObs}[2]{\mathit{obs}(#1,#2)}
+\newcommand{\misprediction}[2]{\mathit{mispred}(#1,#2)}
+\newcommand{\zeroes}[1]{\mathit{zeroes}(#1)}
+\newcommand{\zeros}[1]{\zeroes{#1}}
+\newcommand{\topzeroes}[1]{\mathit{ltz}(#1)}
+\newcommand{\id}{\mathit{id}}
+\newcommand{\ctr}{\mathit{ctr}}
+\newcommand{\committed}[1]{\mathit{cmt}(#1)}
+\newcommand{\rolledback}[1]{\mathit{rb}(#1)}
+\newcommand{\filterComm}[1]{\mathit{filter}_C(#1)}
+\newcommand{\filterRoll}[1]{\mathit{filter}_R(#1)}
+\newcommand{\eqvclass}[1]{\llbracket #1 \rrbracket}
+\newcommand{\eqvclassNsteps}[2]{\llbracket #1 \rrbracket_{#2}}
+\newcommand{\reachable}[2]{\mathit{reachable}_{#2}(#1)}
+\newcommand{\expand}[2]{\textsc{expand}(#1,#2)}
+\newcommand{\rbTrans}[1]{\mathit{rbTrans}(#1)}
+\newcommand{\maxRbTrans}[1]{\mathit{maxRbTrans}(#1)}
+\newcommand{\rbTransDepth}[2]{\mathit{rbTrans}(#1,#2)}
+\newcommand{\atLeast}[2]{\mathit{atLeast}(#1,#2)}
+\newcommand{\topId}[1]{\mathit{topId}(#1)}
+\newcommand{\depth}[2]{\mathit{depth}(#1,#2)}
+\newcommand{\trace}[1]{\mathit{trace}(#1)}
+\newcommand{\init}[1]{\mathit{init}(#1)}
+\newcommand{\final}[1]{\mathit{final}(#1)}
+\newcommand{\maxDepth}[1]{\mathit{maxDepth}(#1)}
+\newcommand{\maxWindow}[1]{\mathit{maxWind}(#1)}
+\newcommand{\conf}[1]{\mathit{conf}(#1)}
+\newcommand{\ec}{\rho}
+\newcommand{\trans}[2]{\mathit{transEx}(#1,#2)}
+\newcommand{\transNr}[1]{\mathit{transNr}(#1)}
+\newcommand{\maxTransSet}[1]{\mathit{maxTrans}(#1)}
+\newcommand{\allTransSet}[1]{\mathit{allTrans}(#1)}
+\newcommand{\body}[1]{\mathit{body}(#1)}
+\newcommand{\pcSim}{\sim_{\pc}}
+\newcommand{\nextSim}{\sim_{\mathit{next}}}
+\newcommand{\steps}[1]{\mathit{steps}(#1)}
+\newcommand{\mbp}{{\mathcal{O}}}
+
+
+%%%%% SEQUENCES 
+\newcommand{\finiteSequences}[1]{#1^*}
+\newcommand{\length}[1]{|#1|}
+\newcommand{\prefix}[2]{{#1}^{#2}}
+\newcommand{\elt}[2]{#1|_{#2}}
+\newcommand{\emptysequence}{\varepsilon}
+\newcommand{\concat}{\cdot}
+\newcommand{\decrement}[1]{\mathit{decr}(#1)}
+
+%%%%%% SETS
+\newcommand{\powerset}[1]{2^{#1}}
+
+%%%%% SEC. CONDITIONS
+\newcommand{\knowledge}[4]{K_{#1}(#2,#3, #4)}
+\newcommand{\indist}[1]{\sim_{#1} }
+
+
+%%%%% SYMBOLIC SEMANTICS
+\newcommand{\sexpr}{\mathit{se}}
+\newcommand{\mem}[1]{\mathbf{mem}(#1)}
+\newcommand{\SymVal}{\mathit{SymbVals}}
+\newcommand{\SymExpr}{\mathit{SymbExprs}}
+\newcommand{\ite}[3]{\mathbf{ite}(#1,#2,#3)}
+\newcommand{\encodeLoad}[2]{\mathit{encodeLoad}(#1,#2)}
+\newcommand{\symEval}[2]{\xrightarrow{#2}_{\mathit{s}}}
+\newcommand{\symExprEval}[2]{#2(#1)}
+\newcommand{\SymObs}{\mathit{SymObs}}
+\newcommand{\SymExtObs}{\mathit{SymExtObs}}
+\newcommand{\SymConf}{\mathit{SymConf}}
+\newcommand{\SymExtConf}{\mathit{SymExtConf}}
+\newcommand{\symTraces}[2]{\mathit{symTraces}_{#1}(#2)}
+\newcommand{\symEvalTraces}[1]{\mathit{symTraces}_{\rightarrow}(#1)}
+\newcommand{\symSpevalTraces}[1]{\mathit{symTraces}_{\xleadsto{}}(#1)}
+\newcommand{\concreteJump}[2]{\mathit{concrJump}(#1,#2)}
+\newcommand{\symbolicJump}[2]{\mathit{symbJump}(#1,#2)}
+\newcommand{\otherPc}[3]{\mathit{mispred}(#1,#2,#3)}
+\newcommand{\symb}[1]{#1_s}
+\newcommand{\symWrite}[3]{\kywd{write}(#1,#2,#3)}
+\newcommand{\symRead}[2]{\kywd{read}(#1,#2)}
+\newcommand{\symModels}[1]{\mathit{models}(#1)}
+\newcommand{\determines}[3]{\mathit{determines}_{{#3}}(#1,#2)}
+\newcommand{\low}{\kywd{LOW}}
+\newcommand{\corresponds}[3]{\mathit{corrTraces}_{#2,#3}(#1)}
+\newcommand{\policy}{P}
+\newcommand{\rename}[1]{\mathit{rename}(#1)}
+\newcommand{\symPcObs}[1]{\obsKywd{symPc}(#1)}
+\newcommand{\cstrs}[1]{\mathit{obsEqv}(#1)}
+\newcommand{\pathCond}[1]{\mathit{pthCnd}(#1)}
+\newcommand{\policyEqv}[1]{\mathit{polEqv}(#1)}
+\newcommand{\memcheck}{\textsc{MemLeak}}
+\newcommand{\pccheck}{\textsc{CtrlLeak}}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+\newcommand{\sameSymPc}[1]{\mathit{sameSymbPc}(#1)}
+\newcommand{\decrTop}[1]{\mathit{decr}'(#1)}
+\newcommand{\decrementTop}[1]{\decrTop{#1}}
+\newcommand{\window}[1]{\mathit{wndw}(#1)} 
+\newcommand{\exhaustedTop}[1]{\mathit{enabled}'(#1)}
+\newcommand{\zeroesTop}[1]{\mathit{zeroes}'(#1)}
+
+
+%%%%% CASE STUDIES
+\newcommand{\unp}{\textsc{Unp}}
+\newcommand{\fen}{\textsc{Fen}}
+\newcommand{\slh}{\textsc{Slh}}
+\newcommand{\opt}{\texttt{-O2}}
+\newcommand{\unopt}{\texttt{-O0}}
+
+%%%%% NOTATION FOR PROGRAM EXECUTION
+\newcommand{\lbbar}{\{\kern-0.5ex|}
+\newcommand{\rbbar}{|\kern-0.5ex\}}
+\newcommand{\lanbar}{\langle \kern-0.5ex|}
+\newcommand{\ranbar}{|\kern-0.5ex\rangle}
+\newcommand{\specEval}[3]{\llbracket #1 \rrbracket_{#2}(#3)}
+\newcommand{\nspecEval}[2]{\llparenthesis #1 \rrparenthesis(#2)}
+\newcommand{\amEval}[3]{\lbbar #1 \rbbar_{#2}(#3)}
+\newcommand{\ameval}[1]{\xLongrightarrow{#1}}
+
+\newcommand{\symSpeval}[3]{\xLongrightarrow{#3}_{\mathit{s}}}
+
+\newcommand{\nspecTraces}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\specTraces}[2]{\llbracket #1 \rrbracket_{#2}}
+\newcommand{\amTraces}[2]{\lbbar #1 \rbbar_{#2}}
+\newcommand{\symbTraces}[2]{\amTraces{#1}{#2}^\mathit{symb}} 

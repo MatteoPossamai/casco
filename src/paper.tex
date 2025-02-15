@@ -1,5 +1,9 @@
 % \newif\ifComment\Commentfalse
 \documentclass[conference]{IEEEtran}
+
+\input{packages}
+\input{commands}
+
 \usepackage{microtype}
 \usepackage[switch]{lineno}
 \usepackage{stmaryrd}
@@ -81,6 +85,138 @@
 
 % \input{abstract}
 % \input{TODO}
+
+\begin{figure}
+\begin{tabular}{llcl}
+\multicolumn{4}{l}{\bf Basic Types} \\
+\textit{(Registers)} 	&  $x$		& $\in$ & $\Var$ \\
+\textit{(Values)} 		&  $n, \lbl$ 		& $\in$ & $\Val = \Nat \cup \{\bot\}$ \\\\
+\multicolumn{4}{l}{\bf Syntax} \\
+\textit{(Expressions)} 	&  $e$		& $:=$ & $n \mid x \mid \unaryOp{e} \mid \binaryOp{e_1}{e_2}$ \\
+\textit{(Instructions)} 	&  $i$ 		& $:=$ & $\pskip{} \mid \passign{x}{e} \mid \pload{x}{e} \mid $ \\
+						&			&	   & $\pstore{x}{e} \mid \pjmp{e} \mid \pjz{x}{\lbl} \mid$ \\
+						&			&	   & $ \pcondassign{x}{e}{e'} \mid \pbarrier{}$ \\
+\textit{(Programs)}		&  $p$		& $:=$ & $\cmd{n}{i} \mid \pseq{p_1}{p_2}$
+\end{tabular}
+\caption{\lang{} Syntax}\label{figure:language:syntax}
+\end{figure}
+
+
+\begin{figure*}
+
+\begin{tabular}{l c l c l c l c}
+\multicolumn{8}{l}{\bf Expression evaluation}\\
+	$\exprEval{n}{a} = n$ & & $\exprEval{x}{a} = a(x)$ &
+	 $\exprEval{\unaryOp{e}}{a} = \unaryOp{\exprEval{e}{a}}$ & & $\exprEval{\binaryOp{e_1}{e_2}}{a} = \binaryOp{\exprEval{e_1}{a}}{\exprEval{e_2}{a}}$\\\\
+\multicolumn{8}{l}{\bf Instruction evaluation}\\
+\multicolumn{8}{l}{
+{
+\small
+\begin{mathpar}
+\inferrule[Skip]
+{
+\select{p}{a(\pc)} = \pskip
+}
+{
+\tup{m, a} \eval{p}{} \tup{m, a[\pc \mapsto a(\pc)+1]}
+}
+
+\inferrule[Barrier]
+{
+	p(a(\pc)) = \pbarrier
+}
+{
+	\tup{m,a} \eval{p}{} \tup{m,a[\pc \mapsto a(\pc) + 1]}
+}
+
+\inferrule[Assign]
+{
+\select{p}{a(\pc)} = \passign{x}{e}\\
+x \neq \pc
+}
+{
+\tup{m, a} \eval{p}{} \tup{m, a[\pc \mapsto a(\pc)+1,x \mapsto \exprEval{e}{a}]}
+}
+
+\inferrule[ConditionalUpdate-Sat]
+{
+	p(a(\pc)) = \pcondassign{x}{e}{e'}\\
+	\exprEval{e'}{a} = 0\\
+	x \neq \pc
+}
+{
+	\tup{m,a} \eval{p}{} \tup{m,a[\pc \mapsto a(\pc) + 1, x \mapsto \exprEval{e}{a}]}
+}
+
+\inferrule[ConditionalUpdate-Unsat]
+{
+	p(a(\pc)) = \pcondassign{x}{e}{e'}\\
+	\exprEval{e'}{a} \neq 0\\
+	x \neq \pc
+}
+{
+	\tup{m,a} \eval{p}{} \tup{m,a[\pc \mapsto a(\pc) + 1]}
+}
+
+\inferrule[Terminate]
+{
+	\select{p}{a(\pc)} = \bot
+}
+{
+\tup{m, a} \eval{p}{} \tup{m, a[\pc \mapsto \bot]}
+}
+
+\inferrule[Load]
+{
+\select{p}{a(\pc)} = \pload{x}{e} \\ 
+x \neq \pc \\
+n = \exprEval{e}{a}
+}
+{
+\tup{m, a} \eval{p}{\loadObs{n}} \tup{m, a[\pc \mapsto a(\pc)+1, x \mapsto m(n)]}
+}
+
+\inferrule[Store]
+{
+\select{p}{a(\pc)} = \pstore{x}{e} \\ 	
+n = \exprEval{e}{a}
+}
+{
+\tup{m, a} \eval{p}{\storeObs{n}} \tup{ m[n \mapsto a(x)], a[\pc \mapsto a(\pc)+1]}
+}
+
+\inferrule[Beqz-Sat]
+{
+\select{p}{a(\pc)} = \pjz{x}{\lbl} \\
+a(x) = 0
+}
+{
+\tup{m, a} \eval{p}{\pcObs{\lbl}} \tup{ m, a[\pc \mapsto \lbl]}
+}
+
+\inferrule[Beqz-Unsat]
+{
+\select{p}{a(\pc)} = \pjz{x}{\lbl} \\
+a(x) \neq 0
+}
+{
+\tup{ m, a} \eval{p}{\pcObs{a(\pc)+1}} \tup{ m, a[\pc \mapsto a(\pc) +1]}
+}
+
+\inferrule[Jmp]
+{
+\select{p}{a(\pc)} = \pjmp{e} \\
+\lbl = \exprEval{e}{a}
+}
+{
+\tup{m, a} \eval{p}{\pcObs{\lbl}} \tup{ m, a[\pc \mapsto \lbl]}
+}
+\end{mathpar}
+}
+}
+\end{tabular}
+\caption{\lang{} semantics for a program $p$}\label{figure:language:semantics:full}
+\end{figure*}
 
 % \bibliographystyle{IEEEtranS}
 \bibliographystyle{abbrv}

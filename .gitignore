@@ -8,7 +8,7 @@ experiments/
 *.blg
 *.log
 *.out
-*.pdf
+# *.pdf
 *.toc
 *.synctex.gz
 *.fls

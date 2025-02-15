@@ -1,6 +1,7 @@
 # Assembly
 
 Short description of the Assembly-like code adopted in this work, the motivations and open questions.
+For the language itself, can be found in the paper notes. It is though $\mu$ ASM in the end.  
 
 ## Thoughts and motivations
 
@@ -22,22 +23,3 @@ Short description of the Assembly-like code adopted in this work, the motivation
 - `jz`
 - `lfence`
 - ...
-
-## Syntax
-
-### Version 1
-Fusion between $\mu ASM$ and BIR.
-$$ 
-\begin{align}
-&\text{BASIC TYPES} \\
-&(Registers) & x &\in Regs \\
-&(Values) &n, l &\in Vals = \mathbb{N} \cup \{\bot\} \\
-&(Operators) &op &\in OPS \\
-&\text{SYNTAX} \\ 
-&(Expressions) &e &:= \text{n | x | \text{\textbf{skip}}} | \text{\textbf{mov}(x, e)} \\
-&&& \text{\textbf{cmov}}(x_d, e_s, e_c) | \text{\textbf{BOP}}(op, e_1, e_2) | \\ 
-&&& \text{\textbf{UOP}(op, e)} | \text{\textbf{load}(x, e)} | \text{\textbf{store}(x, e)} | \\
-&&& \text{\textbf{beqz}(x, l)} | \text{\textbf{jmp}(l)} | \text{\textbf{lfence}}\\
-&(Program) &p &:= \text{n:i  |  p1;p2} \\
-\end{align}
-$$
